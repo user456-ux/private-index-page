@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Implement Sticky Header and Footer with CSS</title>
+    <style>
+        /* Add some padding on document's body to prevent the content to go underneath the header and footer */
+        body{        
+            padding-top: 60px;
+            padding-bottom: 40px;
+            background-image: url('bg.jpg');
+            background-size: cover; /* This makes the image cover the entire page */
+            margin: 0px 0px 0px 0px;
+        }
+        .fixed-header, .fixed-footer{
+            width: 100%;
+            position: fixed;        
+            /* background: #333; */
+            /* padding: 10px 0; */
+            color: #fff;
+        }
+        .fixed-header{
+            top: 0;
+            background: #333;
+        }
+        .fixed-footer{
+            bottom: 0;
+            background: #fff;
+            color: #333;
+            padding: 4px 0;
+        }
+        .container{
+            width: 80%;
+            margin: 0 auto; /* Center the DIV horizontally */
+        }
+        nav a{
+            color: #fff;
+            text-decoration: none;
+            padding: 7px 25px;
+            display: inline-block;
+        }
+        .div-1 {
+            background-color: #eeeaea;
+            color: #333;
+            font-size: large;
+        }
+        .div-2 {
+            /* background-color: #eeeaea; */
+            color: #333;
+            font-size: large;
+            padding-top: 20px;
+            padding-left:20px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="fixed-header">
+            <div class="container">
+                <nav>
+                    <a href="#">Home</a>
+                    <!-- <a href="#">About</a>
+                    <a href="#">Products</a>
+                    <a href="#">Services</a>
+                    <a href="#">Contact Us</a> -->
+                </nav>
+            </div>
+        
+            <div class="div-1">
+            <br/>  &nbsp;&nbsp;This page requres a password.  If you were not given this link directly by page owner, please exit
+            immediately.  <br/>  
+            &nbsp;&nbsp<b>All access</b> (IPs, Browser, Device, Location etc.) are be tracking and recorded 
+            for security and access audits. <br/><br/>
+            </div>     
+    </div>
+
+     <!-- content hidden-->
+    <div class="container">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+    </div>    
+    <!-- content hidden-->
+
+    <div class="fixed-footer">
+        <div class="container" style="float: left;">&nbsp;&nbsp; Copyright &copy; NetsoftUX LLC 2025 &nbsp;&nbsp;&nbsp;&nbsp; Your Company</div>        
+    </div>
+
+    <div class="div-2">  body text</div>
+    	<div id="loginbox" class="lightbox" >
+		<div class="horizontal">
+			<div class="vertical">
+				<div class="box">
+					<input style="width: 400; margin: 16px; text-align: center" id="password" type="password" placeholder="Enter your access code" /> <br />
+					<button  style="float: right" id="loginbutton" type="button">Enter</button>
+			    	<!-- <p id="wrongPassword" style="display: none">wrong Password</p> still needed ? -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="https://rawcdn.githack.com/chrisveness/crypto/7067ee62f18c76dd4a9d372a00e647205460b62b/sha1.js"></script>
+	<script type="text/javascript">
+	"use strict";
+	function loadPage(pwd) {
+		var hash= pwd;
+		hash= Sha1.hash(pwd);
+		var url= hash + "/index.html";
+
+		$.ajax({
+			url : url,
+			dataType : "html",
+			success : function(data) {
+				window.location= url;
+			},
+
+            error : function(xhr, ajaxOptions, thrownError) {
+				parent.location.hash= hash;
+				//$("#wrongPassword").show();
+				$("#password").attr("placeholder","Please Try Again...  -log activated");    // $("#password").attr("placeholder","wrong password");
+				$("#password").val("");
+			}
+		});
+	}
+
+	$("#loginbutton").on("click", function() {
+		loadPage($("#password").val());
+	});
+	$("#password").keypress(function(e) {
+		if (e.which == 13) {
+
+			loadPage($("#password").val());
+		}
+	});
+	$("#password").focus();
+	</script>
+
+</body>
+</html>
